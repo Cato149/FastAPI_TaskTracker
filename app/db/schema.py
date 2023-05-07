@@ -1,8 +1,8 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 # * Схемы задач
-class TasksBase(BaseModel):
+class TaskBase(BaseModel):
     title: str | None
     description: str | None
     deadline: datetime | None
@@ -13,11 +13,11 @@ class TasksBase(BaseModel):
     status: str | None
 
 
-class TasksCreate(TasksBase):
+class TaskCreate(TaskBase):
     pass
 
 
-class Tasks(TasksBase):
+class Task(TaskBase):
     id: int
     is_deleted: datetime | None
     
@@ -26,17 +26,17 @@ class Tasks(TasksBase):
     
 
 # * Схемы групп
-class GroupsBase(BaseModel):
+class GroupBase(BaseModel):
     title: str
     user_id: int
 
-class GroupCreate(GroupsBase):
+class GroupCreate(GroupBase):
     pass
 
 
-class Groups(GroupsBase):
+class Group(GroupBase):
     id: int
-    tasks: list[Tasks] = []
+    tasks: list[Task] = []
     
     class Config:
         orm_mode = True
@@ -45,7 +45,7 @@ class Groups(GroupsBase):
 # * Схемы пользоватлея
 class UserBase(BaseModel):
     email: str
-    name: str
+    name: EmailStr
     
 
 class UserCreate(UserBase):
@@ -57,8 +57,8 @@ class UserCreate(UserBase):
 class User(UserBase):
     id: int
     is_deleted: datetime
-    groups: list[Groups] = []
-    tasks: list[Tasks] = []
+    groups: list[Group] = []
+    tasks: list[Task] = []
     registered_at: datetime
     
     class Config:

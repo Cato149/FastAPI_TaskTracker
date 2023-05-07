@@ -4,33 +4,33 @@ from fastapi_pagination import Page
 
 from service.task import task_service
 
-from db.schema import Tasks, TasksCreate
+from db.schema import Task, TaskCreate
 
 
 router = APIRouter(prefix='/task', tags=['task'])
 
 
 
-@router.get('/', response_model=Page[Tasks])
+@router.get('/', response_model=Page[Task])
 def get_tasks(user_id: int = 0):
     items = task_service.get_tasks(user_id=user_id)
     return paginate(items)
 
 
-@router.post('/', response_model=Tasks)    
-def create_task(task: TasksCreate):
+@router.post('/', response_model=Task)    
+def create_task(task: TaskCreate):
     return task_service.create_task(task)
 
 
-@router.get('/group/{group_id}', response_model=Page[Tasks])
+@router.get('/group/{group_id}', response_model=Page[Task])
 def get_tasks_in_group(group_id):
     items = task_service.get_tasks_in_group(group_id)
     return paginate(items)
 
 
-@router.post('/{task_id}')
-def udpate_task(task_id):
-    pass
+@router.put('/update/{task_id}', response_model=Task)
+def udpate_task(task_id, task: Task):
+    return task_service.update_task(task_id, task)
 
 
 @router.delete('/{task_id}')

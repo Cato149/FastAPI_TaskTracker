@@ -2,6 +2,7 @@ FastAPI
 SQLAlchemy
 psycopg2-binary
 fastAPI-pagination
-uvicorn
-dotenv
+python_dotenv
 fastapi_users
+celery
+uvicorn

@@ -1,5 +1,5 @@
 import datetime
-from db.schema import TasksCreate
+from db.schema import TaskCreate, Task
 from db.model import Tasks
 from db.database import session
 
@@ -9,7 +9,7 @@ class TaskService:
         pass
 
     # * CRUD задачи
-    def create_task(self, tasks: TasksCreate):
+    def create_task(self, tasks: TaskCreate):
         db_task = Tasks(
             title=tasks.title,
             description=tasks.description,
@@ -37,9 +37,18 @@ class TaskService:
         session.commit()
         return {"message": "Task moved to trash. After 7 days it would be deleted permanently!"}
 
-    def update_task(self, tasks: Tasks, task_id: int):
-
-        pass
-
+    def update_task(self, task_id: int, updated_task: Task):
+        task = session.query(Tasks).filter(Tasks.id == task_id).first()
+        
+        task.deadline = updated_task.deadline
+        task.description = updated_task.description
+        task.group_id = updated_task.group_id
+        task.status = updated_task.status
+        task.title = updated_task.title
+        session.commit()
+        session.refresh(task)
+        return task
+        
+        
 
 task_service = TaskService()
