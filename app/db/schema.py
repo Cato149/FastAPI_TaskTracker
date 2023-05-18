@@ -1,16 +1,17 @@
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
 # * Схемы задач
 class TaskBase(BaseModel):
-    title: str | None
-    description: str | None
-    deadline: datetime | None
+    title: str
+    description: Optional[str] = None
+    deadline: Optional[datetime] = None
     user_id: int
-    group_id: int
-    created_at: datetime
+    group_id: Optional[int] = None
+    created_at: Optional[datetime] = datetime.utcnow()
     last_update: datetime
-    status: str | None
+    status: Optional[str] = 'ToDO'
 
 
 class TaskCreate(TaskBase):
@@ -19,7 +20,7 @@ class TaskCreate(TaskBase):
 
 class Task(TaskBase):
     id: int
-    is_deleted: datetime | None
+    is_deleted: Optional[datetime] 
     
     class Config:
         orm_mode = True

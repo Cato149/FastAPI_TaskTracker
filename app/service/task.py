@@ -21,25 +21,41 @@ class TaskService:
             status=tasks.status)
         session.add(db_task)
         session.commit()
+
         return db_task
+    
 
     def get_tasks_in_group(self, group_id: int):
         return session.query(Tasks).filter(Tasks.group_id == group_id)
+    
 
     def get_tasks(self, user_id: int):
         return session.query(Tasks).filter(Tasks.user_id == user_id)
+    
 
     def delete_task(self, task_id: int):
+        """
+        Можно использовать библиотеку schedule для удаления по расписанию 
+        """
         delete_date = datetime.date.today() + datetime.timedelta(days=7)
         task = session.query(Tasks).filter(Tasks.id == task_id)
 
+        if not task:
+            return None
+
         task.update({Tasks.is_deleted: delete_date})
         session.commit()
-        return {"message": "Task moved to trash. After 7 days it would be deleted permanently!"}
+        # return API != return Service - не выдавать клиентскую ошибку в сервисе!
+        return True
+    
 
+# ! посмотреть что такое Mapper  в Python. Применить тут
     def update_task(self, task_id: int, updated_task: Task):
         task = session.query(Tasks).filter(Tasks.id == task_id).first()
-        
+
+        if not task:
+            return None
+
         task.deadline = updated_task.deadline
         task.description = updated_task.description
         task.group_id = updated_task.group_id
@@ -48,7 +64,6 @@ class TaskService:
         session.commit()
         session.refresh(task)
         return task
-        
-        
+
 
 task_service = TaskService()

@@ -3,6 +3,6 @@ SQLAlchemy
 psycopg2-binary
 fastAPI-pagination
 python_dotenv
-fastapi_users
+'fastapi-users[sqlalchemy]'
 celery
 uvicorn
