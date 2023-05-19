@@ -5,12 +5,12 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_asyn
 
 
 
-SQLALCHEMY_DATABASE_URL ="postgresql://task_tracker:track_pass_123@localhost/task_tracker"
+SQLALCHEMY_DATABASE_URL ="postgresql+asyncpg://task_tracker:track_pass_123@localhost/task_tracker"
 
-engine = create_engine(SQLALCHEMY_DATABASE_URL)
+engine = create_async_engine(SQLALCHEMY_DATABASE_URL)
 
-Session = sessionmaker(bind=engine, autoflush=False, autocommit=False)
+Session = async_sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
 Base = declarative_base()
 
-session = Session()
+session = AsyncSession()

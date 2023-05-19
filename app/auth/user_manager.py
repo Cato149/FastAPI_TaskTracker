@@ -3,7 +3,7 @@ from typing import Optional
 from fastapi import Depends, Request
 from fastapi_users import BaseUserManager, FastAPIUsers, IntegerIDMixin
 
-from .db import Users, get_user_db
+from db.model import Users, get_user_db
 from .auth import auth_backend
 
 from config import SECRET_KEY

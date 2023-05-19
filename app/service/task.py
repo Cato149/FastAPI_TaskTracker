@@ -27,7 +27,7 @@ class TaskService:
 
     def get_tasks_in_group(self, group_id: int):
         return session.query(Tasks).filter(Tasks.group_id == group_id)
-    
+        
 
     def get_tasks(self, user_id: int):
         return session.query(Tasks).filter(Tasks.user_id == user_id)
