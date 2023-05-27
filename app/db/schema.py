@@ -4,13 +4,13 @@ from datetime import datetime
 
 # * Схемы задач
 class TaskBase(BaseModel):
-    title: str
+    title: str = "New Task"
     description: Optional[str] = None
     deadline: Optional[datetime] = None
     user_id: int
     group_id: Optional[int] = None
     created_at: Optional[datetime] = datetime.utcnow()
-    last_update: datetime
+    last_update: datetime = datetime.utcnow()
     status: Optional[str] = 'ToDO'
 
 
@@ -29,19 +29,22 @@ class Task(TaskBase):
 # * Схемы групп
 class GroupBase(BaseModel):
     title: str
-    user_id: int
+    
 
 class GroupCreate(GroupBase):
-    pass
+    user_id: int
 
 
 class Group(GroupBase):
     id: int
+    user_id: int
     tasks: list[Task] = []
     
     class Config:
         orm_mode = True
 
+class GroupUpdate(GroupBase):
+    pass
 
 # * Схемы пользоватлея
 class UserBase(BaseModel):
